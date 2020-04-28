@@ -85,23 +85,40 @@ class Macgyver:
         self.case_y = 4
         self.x = 22.5       #location of start for the sprite (x,y)
         self.y = 60
+        self.backpack = 0
 
     def move_down(self):                                      
         if self.map.structure[self.case_y + 1][self.case_x] != 'W':    #Mac cannot go through walls
             self.case_y += 1                                           #M cursor in .structure[] is moving
             self.y = self.case_y * SPRITE_SIZE                         #Sprite in labyrinth is moving too
+            self.grab_items()
 
     def move_up(self):
         if self.map.structure[self.case_y - 1][self.case_x] != 'W':
             self.case_y -= 1
             self.y = self.case_y * SPRITE_SIZE
+            self.grab_items()
 
     def move_right(self):
         if self.map.structure[self.case_y][self.case_x + 1] != 'W':
             self.case_x += 1
             self.x = self.case_x * SPRITE_SIZE
-        
+            self.grab_items()
+
     def move_left(self):    
         if self.map.structure[self.case_y][self.case_x - 1] != 'W':
-                self.case_x -= 1
-                self.x = self.case_x * SPRITE_SIZE
+            self.case_x -= 1
+            self.x = self.case_x * SPRITE_SIZE
+            self.grab_items()
+
+    def grab_items(self):
+        for (x, y) in self.map.pos_items:
+            if (self.case_x,self.case_y) == self.map.pos_items[0]:
+                self.backpack =+ 1
+                self.map.pos_items[0] = (0,0)
+            elif (self.case_x, self.case_y) == self.map.pos_items[1]:
+                self.backpack =+ 1
+                self.map.pos_items[1] = (30, 0)
+            elif (self.case_x, self.case_y) == self.map.pos_items[2]:
+                self.backpack =+ 1
+                self.map.pos_items[2] = (50, 0)
