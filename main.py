@@ -8,8 +8,9 @@ from macgyver import MacGyver
 def main():
     maze = Maze("level.txt") 
     maze.file_into_list()              
-    maze.positions_items()        
-    maze.display(22.5, 60)    
+    maze.positions_items()
+    maze.positions_guardian()        
+    maze.display(40, 80)    
     macg = MacGyver(maze)
 
     running = True
@@ -32,7 +33,7 @@ def main():
                     macg.move_left()            # Move Macguyver left
                         
             maze.display(macg.x, macg.y)             #RE-Print/Actualize sreen game after an event on keyboard
-        
+            macg.check_win()
 
 if __name__ == "__main__":
     main()
