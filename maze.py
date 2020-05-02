@@ -3,25 +3,21 @@
 
 import pygame
 import random
+from constants import ROWS, COLUMNS, SPRITE_SIZE
 
-#constantes
-ROWS = 25
-COLUMNS = 25
-SPRITE_SIZE = 20
-
-class Map:
+class Maze:
 
     def __init__(self, filename):
         pygame.init()                         
         logo_image = pygame.image.load("ressource/MacGyver.jpg")
         self.filename = filename
-        self.window = pygame.display.set_mode((ROWS * SPRITE_SIZE, COLUMNS * SPRITE_SIZE), pygame.RESIZABLE) # windows build
+        self.window = pygame.display.set_mode((COLUMNS * SPRITE_SIZE, ROWS * SPRITE_SIZE)) # windows build
         pygame.display.set_icon(logo_image) #two add for the windows icon and title
         pygame.display.set_caption("Aidez MacGyver à s'échapper !")
 
 
 
-    def lab(self): #labyrinth structure from the txt file
+    def file_into_list(self): #Create maze structure in list from the txt file
         self.structure = [] #initialization empty list
         with open(self.filename, "r") as f: #opening file.txt in reading mode
             for line in f:                     #reading each line in file.txt
@@ -30,18 +26,18 @@ class Map:
                 self.structure.append(line_level)   #append line to structure
 
     
-    def pos_items(self):    # define 3 random positions for items"""
-        self.items_poss = [] #Create an empty list for items positions
+    def positions_items(self):    # define 3 random positions for items
+        self.items_possibilities = [] #Create an empty list for items positions
         for y, col in enumerate(self.structure): #run throught .structure[]
             for x, case in enumerate(col):
-                if case == "0":
-                    position_items = (x, y) #tuple positions items throught .structure[]
-                    self.items_poss.append(position_items) # Append possible position on labyrinth
-        self.pos_items = random.sample(self.items_poss, 3) # Create a list of possible random positions
+                if case == " ":
+                    position_item = (x, y) #tuple positions items throught .structure[]
+                    self.items_possibilities.append(position_item) # Append possibilities position on maze
+        self.positions_items = random.sample(self.items_possibilities, 3) # Create a list of possible random positions
     
     
     def display(self, hero_x, hero_y):                              #Display labyrinth and elements
-        self.window.fill((0, 0, 0))
+        self.window.fill((0, 70, 250))
         wall_img = pygame.image.load('ressource/wall.png').convert()             #loading all image with pygame
         backgr_img = pygame.image.load('ressource/backgr.jpg').convert()           #convert() -> optimization
         macgyver_img = pygame.image.load('ressource/MacGyver.png').convert_alpha()  #convert_alpha() -> transparency
@@ -51,7 +47,7 @@ class Map:
         ether_img = pygame.image.load('ressource/ether.png').convert_alpha()
         syringe_img = pygame.image.load('ressource/seringue.png').convert_alpha()
 
-        self.window.blit(backgr_img, (0, 0))
+        self.window.blit(backgr_img, (20, 20))
 
         for y, col in enumerate(self.structure): #run throught .structure[]
             for x, case in enumerate(col):
@@ -67,7 +63,7 @@ class Map:
                     self.window.blit(guardian_img, (pos_x, pos_y))   #Display the guardian
 
 
-        needle, syringe, ether = self.pos_items
+        needle, syringe, ether = self.positions_items
         self.window.blit(needle_img, (needle[0] * SPRITE_SIZE,
                                       needle[1] * SPRITE_SIZE))
         self.window.blit(syringe_img, (syringe[0] * SPRITE_SIZE,
@@ -77,48 +73,3 @@ class Map:
 
 
         pygame.display.flip()
-
-class Macgyver:
-    def __init__(self, map):
-        self.map = map
-        self.case_x = 2     #location of start in structure (x,y)
-        self.case_y = 4
-        self.x = 22.5       #location of start for the sprite (x,y)
-        self.y = 60
-        self.backpack = 0
-
-    def move_down(self):                                      
-        if self.map.structure[self.case_y + 1][self.case_x] != 'W':    #Mac cannot go through walls
-            self.case_y += 1                                           #M cursor in .structure[] is moving
-            self.y = self.case_y * SPRITE_SIZE                         #Sprite in labyrinth is moving too
-            self.grab_items()
-
-    def move_up(self):
-        if self.map.structure[self.case_y - 1][self.case_x] != 'W':
-            self.case_y -= 1
-            self.y = self.case_y * SPRITE_SIZE
-            self.grab_items()
-
-    def move_right(self):
-        if self.map.structure[self.case_y][self.case_x + 1] != 'W':
-            self.case_x += 1
-            self.x = self.case_x * SPRITE_SIZE
-            self.grab_items()
-
-    def move_left(self):    
-        if self.map.structure[self.case_y][self.case_x - 1] != 'W':
-            self.case_x -= 1
-            self.x = self.case_x * SPRITE_SIZE
-            self.grab_items()
-
-    def grab_items(self):
-        for (x, y) in self.map.pos_items:
-            if (self.case_x,self.case_y) == self.map.pos_items[0]:
-                self.backpack =+ 1
-                self.map.pos_items[0] = (0,0)
-            elif (self.case_x, self.case_y) == self.map.pos_items[1]:
-                self.backpack =+ 1
-                self.map.pos_items[1] = (30, 0)
-            elif (self.case_x, self.case_y) == self.map.pos_items[2]:
-                self.backpack =+ 1
-                self.map.pos_items[2] = (50, 0)
