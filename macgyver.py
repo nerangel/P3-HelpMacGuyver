@@ -6,16 +6,21 @@ from constants import SPRITE_SIZE
 class MacGyver:
     def __init__(self, maze):
         self.maze = maze
-        self.location_M_x = 3     #location of start in structure (x,y)
-        self.location_M_y = 5
-        self.x = 40       #location of start for the sprite (x,y)
+        #location of start in structure (x,y)
+        self.location_M_x = 2     
+        self.location_M_y = 4
+        #location of start for the sprite (x,y)
+        self.x = 40       
         self.y = 80
         self.backpack = 0
 
-    def move_down(self):                                      
-        if self.maze.structure[self.location_M_y + 1][self.location_M_x] != 'W':    #Mac cannot go through walls
-            self.location_M_y += 1                                           #M cursor in .structure[] is moving
-            self.y = self.location_M_y * SPRITE_SIZE                         #Sprite in labyrinth is moving too
+    def move_down(self):
+        #Mac cannot go through walls                                      
+        if self.maze.structure[self.location_M_y + 1][self.location_M_x] != 'W': 
+            #M cursor in .structure[] is moving   
+            self.location_M_y += 1      
+            #Sprite in labyrinth is moving too                                     
+            self.y = self.location_M_y * SPRITE_SIZE                        
             self.grab_items()
 
     def move_up(self):
@@ -49,11 +54,8 @@ class MacGyver:
                 self.maze.positions_items[2] = (11, 16)
 
     def check_win(self):
-        for x in self.maze.positions_guardian:
-            for y in self.maze.positions_guardian:
-                if self.location_M_x == x and self.location_M_y == y:
-                    print(self.backpack)
-                    if self.backpack == 3:
-                        self.maze.display_win()
-                    else:
-                        self.maze.display_lose()
+        if self.location_M_x == self.maze.positions_guardian[1] and self.location_M_y == self.maze.positions_guardian[0]:               
+            if self.backpack == 3:
+                self.maze.display_win()
+            else:
+                self.maze.display_lose()
