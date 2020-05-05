@@ -9,6 +9,7 @@ def main():
     maze = Maze("level.txt") 
     maze.file_into_list()              
     maze.positions_items()
+    maze.positions_stairway_out()
     maze.positions_guardian()        
     maze.display(40, 80)    
     macg = MacGyver(maze)
@@ -38,7 +39,9 @@ def main():
                         
             maze.display(macg.x, macg.y)             
             #RE-Print/Actualize sreen game after an event on keyboard
-            macg.check_win()
+            macg.check_guardian_position()
+            running = macg.check_win()
+            
 
 if __name__ == "__main__":
     main()

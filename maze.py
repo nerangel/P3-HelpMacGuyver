@@ -34,11 +34,16 @@ class Maze:
                 self.structure.append(line_level)   
 
     def positions_guardian(self):
-        for x, col in enumerate(self.structure):
-            for y, case in enumerate(col):
+        for y, col in enumerate(self.structure):
+            for x, case in enumerate(col):
                 if case == "G":
                     self.positions_guardian = (x, y)
     
+    def positions_stairway_out(self):
+        for y, col in enumerate(self.structure):
+            for x, case in enumerate(col):
+                if case == "O":
+                    self.positions_stairway_out = (x, y)
 
     # define 3 random positions for items
     def positions_items(self):    
@@ -88,6 +93,7 @@ class Maze:
                     self.window.blit(stairsway_out_image, (pos_x, pos_y)) 
                 elif case == "G":
                     #Display the guardian
+                    self.possition_G_sprit = (pos_x,pos_y)
                     self.window.blit(guardian_img, (pos_x, pos_y))   
 
 
@@ -100,6 +106,12 @@ class Maze:
                                      ether[1] * SPRITE_SIZE))
 
 
+        pygame.display.flip()
+
+    def display_slept_guardian(self):
+        #Display the slopy guardian
+        bubble = pygame.image.load('ressource/bubble.png').convert_alpha()
+        self.window.blit(bubble, self.possition_G_sprit)
         pygame.display.flip()
 
     def display_win(self):

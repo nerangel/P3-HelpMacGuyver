@@ -42,20 +42,26 @@ class MacGyver:
             self.grab_items()
 
     def grab_items(self):
-        for (x, y) in self.maze.positions_items:
-            if (self.location_M_x,self.location_M_y) == self.maze.positions_items[0]:
-                self.backpack += 1
-                self.maze.positions_items[0] = (5,16)
-            elif (self.location_M_x, self.location_M_y) == self.maze.positions_items[1]:
-                self.backpack += 1
-                self.maze.positions_items[1] = (8, 16)
-            elif (self.location_M_x, self.location_M_y) == self.maze.positions_items[2]:
-                self.backpack += 1
-                self.maze.positions_items[2] = (11, 16)
+        if (self.location_M_x,self.location_M_y) == self.maze.positions_items[0]:
+            self.backpack += 1
+            self.maze.positions_items[0] = (5,16)
+        elif (self.location_M_x, self.location_M_y) == self.maze.positions_items[1]:
+            self.backpack += 1
+            self.maze.positions_items[1] = (8, 16)
+        elif (self.location_M_x, self.location_M_y) == self.maze.positions_items[2]:
+            self.backpack += 1
+            self.maze.positions_items[2] = (11, 16)
 
-    def check_win(self):
-        if self.location_M_x == self.maze.positions_guardian[1] and self.location_M_y == self.maze.positions_guardian[0]:               
+    def check_guardian_position(self):
+        if self.location_M_x == self.maze.positions_guardian[0] and self.location_M_y == self.maze.positions_guardian[1]:               
             if self.backpack == 3:
-                self.maze.display_win()
+                self.maze.display_slept_guardian()
             else:
                 self.maze.display_lose()
+
+    def check_win(self):
+        running = True
+        if self.location_M_x == self.maze.positions_stairway_out[0] and self.location_M_y == self.maze.positions_stairway_out[1]:
+            self.maze.display_win()
+            running = False 
+        return running

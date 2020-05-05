@@ -7,12 +7,12 @@ wW WWW W W W W W
 wW     W   W W W
 wW WWWWWWW W WWW
 wW       W W WOW
-wWWW WWW W W W W
-wW     W W   W W
+wWWW WWW W W W/W
+wW     W W   W/W
 wWWW WWW WWW  GW
-wW W   W W   W W
-wW W W W W WWW W
-wW   W W     W W
+wW W   W W   W/W
+wW W W W W WWW/W
+wW   W W     W/W
 wWWWWWWWWWWWWWWW
 
 
