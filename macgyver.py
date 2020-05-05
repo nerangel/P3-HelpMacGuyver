@@ -53,15 +53,17 @@ class MacGyver:
             self.maze.positions_items[2] = (11, 16)
 
     def check_guardian_position(self):
+        reset = 0
         if self.location_M_x == self.maze.positions_guardian[0] and self.location_M_y == self.maze.positions_guardian[1]:               
             if self.backpack == 3:
                 self.maze.display_slept_guardian()
             else:
-                self.maze.display_lose()
+                reset = self.maze.display_lose()
+                return reset        
+        
 
     def check_win(self):
-        running = True
+        reset = 0
         if self.location_M_x == self.maze.positions_stairway_out[0] and self.location_M_y == self.maze.positions_stairway_out[1]:
-            self.maze.display_win()
-            running = False 
-        return running
+            reset = self.maze.display_win() 
+            return reset 

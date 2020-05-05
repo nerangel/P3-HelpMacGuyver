@@ -15,13 +15,14 @@ class Game:
         maze.display(40, 80)    
         macg = MacGyver(maze)
 
+        reset = 0
         running = True
         while running:
             for event in pygame.event.get():    
                 # Checking every events happening while the game is running
-                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.type == pygame.K_ESCAPE):
-                    running = False
-                    break       
+                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                    reset = 2
+                    return reset        
     
                 if event.type == pygame.KEYDOWN:        
                     # IF Keyborad press
@@ -38,8 +39,14 @@ class Game:
                 
                     if event.key == pygame.K_LEFT:  
                         macg.move_left()            
-                        
+
+                #RE-Print/Actualize sreen game after an event on keyboard        
                 maze.display(macg.x, macg.y)             
-                #RE-Print/Actualize sreen game after an event on keyboard
-                macg.check_guardian_position()
-                running = macg.check_win()
+                #Check win or lose conditions and guardian on maps
+                reset = macg.check_guardian_position()
+                if reset == 1 or reset == 2:
+                    return reset
+                reset = macg.check_win()
+                if reset == 1 or reset == 2:
+                    return reset
+                    

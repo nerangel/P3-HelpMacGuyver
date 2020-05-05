@@ -116,12 +116,40 @@ class Maze:
 
     def display_win(self):
         #Display the victory screen
+        reset = 0
+        lose = True
         win_img = pygame.image.load('ressource/win.jpg').convert_alpha()
         self.window.blit(win_img, (0, 0))
         pygame.display.flip()
+
+        while lose:
+            for event in pygame.event.get(): 
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    reset = 1
+                    lose = False
+                    return reset
+                            
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                    reset = 2
+                    lose = False
+                    return reset
     
     def display_lose(self):
         #Display the defeat screen
+        reset = 0
+        lose = True
         lose_img = pygame.image.load('ressource/game_over.jpg').convert_alpha()
         self.window.blit(lose_img, (0, 0))
         pygame.display.flip()
+
+        while lose:
+            for event in pygame.event.get(): 
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    reset = 1
+                    lose = False
+                    return reset
+                            
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                    reset = 2
+                    lose = False
+                    return reset

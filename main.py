@@ -4,8 +4,12 @@
 from game import Game
 
 def main():
-    level = Game()
-    level.run()
-            
+    #reset: 0 = running / 1 = reset / 2 = quit
+    reset = 0
+    while reset != 2:
+        level = Game()
+        reset = level.run()
+        
+       
 if __name__ == "__main__":
     main()
