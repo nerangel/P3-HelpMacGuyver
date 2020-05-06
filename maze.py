@@ -93,7 +93,7 @@ class Maze:
                     self.window.blit(stairsway_out_image, (pos_x, pos_y)) 
                 elif case == "G":
                     #Display the guardian
-                    self.possition_G_sprit = (pos_x,pos_y)
+                    self.position_G_sprit = (pos_x,pos_y)
                     self.window.blit(guardian_img, (pos_x, pos_y))   
 
 
@@ -111,7 +111,7 @@ class Maze:
     def display_slept_guardian(self):
         #Display the slopy guardian
         bubble = pygame.image.load('ressource/bubble.png').convert_alpha()
-        self.window.blit(bubble, self.possition_G_sprit)
+        self.window.blit(bubble, self.position_G_sprit)
         pygame.display.flip()
 
     def display_win(self):
