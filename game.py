@@ -3,50 +3,130 @@
 
 import pygame
 from maze import Maze
-from macgyver import MacGyver
+from constants import SPRITE_SIZE
+
 
 class Game:
+    def __init__(self):
+        self.maze = Maze("level.txt") 
+        self.state = ""
+        """location of start in structure (x,y)"""
+        self.pos_mac_x = 2     
+        self.pos_mac_y = 4
+        """location of start for the sprite (x,y)"""
+        self.x = 40       
+        self.y = 80
+        self.backpack = 0
+
+
     def run(self):
-        maze = Maze("level.txt") 
-        maze.file_into_list()              
-        maze.positions_items()
-        maze.positions_stairway_out()
-        maze.positions_guardian()        
-        maze.display(40, 80)    
-        macg = MacGyver(maze)
-
-        reset = 0
-        running = True
-        while running:
+        self.state = "running"
+        while True:
+            if self.state == "running" or self.state == "slopy_guard":
+                """actualize / RE-Print sreen game after an event on keyboard"""       
+                self.maze.display(self.x, self.y, self.state)
+            """checking every events happening while the game is running"""
             for event in pygame.event.get():    
-                # Checking every events happening while the game is running
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                    reset = 2
-                    return reset        
+                    self.state = "quit"
+                    return         
     
-                if event.type == pygame.KEYDOWN:        
-                    # IF Keyborad press
-                    if event.key == pygame.K_DOWN:  
-                        # IF Arrow down pressed
-                        macg.move_down()            
-                        # Move Macguyver down
-                
-                    if event.key == pygame.K_UP:    
-                        macg.move_up()             
-                
-                    if event.key == pygame.K_RIGHT: 
-                        macg.move_right()           
-                
-                    if event.key == pygame.K_LEFT:  
-                        macg.move_left()            
-
-                #RE-Print/Actualize sreen game after an event on keyboard        
-                maze.display(macg.x, macg.y)             
-                #Check win or lose conditions and guardian on maps
-                reset = macg.check_guardian_position()
-                if reset == 1 or reset == 2:
-                    return reset
-                reset = macg.check_win()
-                if reset == 1 or reset == 2:
-                    return reset
+                """if keyborad press"""        
+                if event.type == pygame.KEYDOWN:
+                    if self.state == "running" or self.state == "slopy_guard":   
+                        """if arrow down pressed"""
+                        if event.key == pygame.K_DOWN:  
+                            """move macguyver down"""
+                            self.move("down")            
+                            
+                        elif event.key == pygame.K_UP:    
+                            self.move("up")             
                     
+                        elif event.key == pygame.K_RIGHT: 
+                            self.move("right")           
+                    
+                        elif event.key == pygame.K_LEFT:  
+                            self.move("left")
+                        """check win or lose conditions and guardian on maps"""        
+                        self.state = self.check_status()
+                        
+                    """change the state of the game"""
+                    if self.state != "running" and self.state != "slopy_guard":                
+                        if  event.key == pygame.K_r:
+                            self.state = "reset"
+                            return 
+                        
+                        elif event.key == pygame.K_q:
+                            self.state = "quit"
+                            return
+              
+
+
+                                 
+    def check_status(self):
+        if self.pos_mac_x == self.maze.stairsway_out_pos[0] and self.pos_mac_y == self.maze.stairsway_out_pos[1]:
+            """display the victory screen"""
+            win_img = pygame.image.load('ressource/win.jpg').convert_alpha()
+            self.maze.window.blit(win_img, (0, 0))
+            pygame.display.flip()
+            return "win"
+        
+        elif self.pos_mac_x == self.maze.guardian_pos[0] and self.pos_mac_y == self.maze.guardian_pos[1]:               
+            if self.backpack == 3:
+                return "slopy_guard"
+            else:
+                """display the defeat screen"""
+                lose_img = pygame.image.load('ressource/game_over.jpg').convert_alpha()
+                self.maze.window.blit(lose_img, (0, 0))
+                pygame.display.flip()
+                return "lose"     
+        
+        elif self.state == "slopy_guard":
+            return "slopy_guard"
+        
+        else:
+            return "running"
+  
+
+
+    def move(self, direction):
+        if direction == "down":
+            """mac cannot go through walls"""                                      
+            if self.maze.structure[self.pos_mac_y + 1][self.pos_mac_x] != 'W': 
+                """macguyver cursor in .structure[] is moving"""   
+                self.pos_mac_y += 1      
+                """sprite in labyrinth is moving too"""                                     
+                self.y = self.pos_mac_y * SPRITE_SIZE                        
+                self.grab_items()
+
+        elif direction == "up":
+            if self.maze.structure[self.pos_mac_y - 1][self.pos_mac_x] != 'W':
+                self.pos_mac_y -= 1
+                self.y = self.pos_mac_y * SPRITE_SIZE
+                self.grab_items()
+
+        elif direction == "right":
+            if self.maze.structure[self.pos_mac_y][self.pos_mac_x + 1] != 'W':
+                self.pos_mac_x += 1
+                self.x = self.pos_mac_x * SPRITE_SIZE
+                self.grab_items()
+        
+        elif direction == "left":
+            if self.maze.structure[self.pos_mac_y][self.pos_mac_x - 1] != 'W':
+                self.pos_mac_x -= 1
+                self.x = self.pos_mac_x * SPRITE_SIZE
+                self.grab_items()
+        return     
+                       
+
+    def grab_items(self):
+        if (self.pos_mac_x,self.pos_mac_y) == self.maze.positions_items[0]:
+            self.backpack += 1
+            self.maze.positions_items[0] = (5,16)
+        elif (self.pos_mac_x, self.pos_mac_y) == self.maze.positions_items[1]:
+            self.backpack += 1
+            self.maze.positions_items[1] = (8, 16)
+        elif (self.pos_mac_x, self.pos_mac_y) == self.maze.positions_items[2]:
+            self.backpack += 1
+            self.maze.positions_items[2] = (11, 16)
+
