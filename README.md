@@ -1,7 +1,7 @@
-# help macguyver to escape
-little game create with pygame in python 3.
+# Help Macguyver to escape
+Little game create with pygame in python 3.
 
-third project of openclassrooms in cours developtment in python.
+Third project of openclassrooms in cours developtment in python.
 
 ## Development
 ### Requirements
@@ -20,13 +20,13 @@ third project of openclassrooms in cours developtment in python.
 2. Create and activate a virtual environment:
 
     ```sh
-    python3 -m venv .venv; source .venv/bin/activate 
+    python3 -m venv .venv; source .venv/bin/activate (mac)
     ```
 
 3. Install requirements:
 
     ```sh
-    pip install pygame
+    pip install -r requirements.txt
     ```
 
 
