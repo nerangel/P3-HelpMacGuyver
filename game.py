@@ -13,9 +13,9 @@ class Game:
         and interactions between characters and items.
         """
         self.maze = Maze("level.txt")
-        self.guardian_pos = self.maze.get_pos("G")
-        self.stairsway_out_pos = self.maze.get_pos("O")
-        self.pos_mac = self.maze.get_pos("M")
+        self.guardian_pos = self.get_pos("G")
+        self.stairsway_out_pos = self.get_pos("O")
+        self.pos_mac = self.get_pos("M")
         self.state = "running"
         self.backpack = 0
 
@@ -142,3 +142,12 @@ class Game:
         elif self.pos_mac == self.maze.positions_items[2]:
             self.backpack += 1
             self.maze.positions_items[2] = (11, 16)
+
+    def get_pos(self, sprite: str) -> int:
+        """
+        get the position in struct[] of the sprite pass in the fonction.
+        """
+        for y, col in enumerate(self.maze.structure):
+            for x, case in enumerate(col):
+                if case == sprite:
+                    return [x, y]

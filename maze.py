@@ -97,15 +97,6 @@ class Maze:
         with open(filename, "r") as f:
             self.structure = [list(line) for line in f.readlines()]
 
-    def get_pos(self, sprite: str) -> int:
-        """
-        get the position in struct[] of the sprite pass in the fonction.
-        """
-        for y, col in enumerate(self.structure):
-            for x, case in enumerate(col):
-                if case == sprite:
-                    return [x, y]
-
     def randomize_items(self):
         """
         define 3 random positions for items.
