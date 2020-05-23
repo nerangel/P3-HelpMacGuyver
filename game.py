@@ -7,6 +7,11 @@ from maze import Maze
 
 
 class Game:
+    """
+    Class for the gameplay.
+
+    Hero movement and conditions of winning.
+    """
     def __init__(self):
         """
         initialazing of maze and position in the game for all tests

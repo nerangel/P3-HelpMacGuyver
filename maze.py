@@ -9,6 +9,12 @@ from constants import ROWS, COLUMNS, SPRITE_SIZE
 
 
 class Maze:
+    """
+    Class for display everything
+
+    Everything possess is place define by .struct[]
+    load itself from a .txt also in this class.
+    """
     def __init__(self, filename: str):
         """
         windows build.
